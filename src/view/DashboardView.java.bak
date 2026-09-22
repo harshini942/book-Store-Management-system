@@ -1,0 +1,28 @@
+package view;
+
+import javax.swing.*;
+
+public class DashboardView extends JFrame {
+    public JButton btnProducts, btnUsers;
+
+    public DashboardView(String role) {
+        setTitle("Dashboard - " + role);
+        setSize(300,200);
+        setLayout(null);
+
+        btnProducts = new JButton("Manage Products");
+        btnProducts.setBounds(50,40,180,30);
+        add(btnProducts);
+
+        btnUsers = new JButton("Manage Users");
+        btnUsers.setBounds(50,90,180,30);
+        add(btnUsers);
+
+        if (!role.equals("Manager")) {
+            btnUsers.setEnabled(false);
+        }
+
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+}

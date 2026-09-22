@@ -1,0 +1,24 @@
+package controller;
+
+import view.UserView;
+import config.DBConnection;
+import java.sql.*;
+
+public class UserController {
+    public UserController(UserView view) {
+        view.btnAdd.addActionListener(e -> {
+            try {
+                Connection con = DBConnection.getConnection();
+                String sql = "INSERT INTO users(username,password,role) VALUES (?,?,?)";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, view.txtUser.getText());
+                ps.setString(2, view.txtPass.getText());
+                ps.setString(3, view.cmbRole.getSelectedItem().toString());
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "User Created");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+}

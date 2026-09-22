@@ -1,0 +1,34 @@
+package controller;
+
+import view.*;
+import model.User;
+import config.DBConnection;
+import java.sql.*;
+import javax.swing.JOptionPane;
+
+public class LoginController {
+    public LoginController(LoginView view) {
+        view.btnLogin.addActionListener(e -> {
+            try {
+                Connection con = DBConnection.getConnection();
+                String sql = "SELECT * FROM users WHERE username=? AND password=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, view.txtUser.getText());
+                ps.setString(2, view.txtPass.getText());
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    new DashboardController(
+                        new DashboardView(rs.getString("role")),
+                        new User(rs.getString("username"), rs.getString("role"))
+                    );
+                    view.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid Login");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+}
